@@ -1,4 +1,7 @@
 const contacts = require("../contacts.json");
+const {
+  updateContactSchema,
+} = require("../../utils/validate/schemas/contacts");
 
 const updateContact = (req, res) => {
   const { contactId } = req.params;
@@ -15,10 +18,22 @@ const updateContact = (req, res) => {
   }
 
   if (!req.body) {
+    console.log(req.body);
     res.status(400).json({
       status: "error",
       code: 400,
       message: "missing fields",
+    });
+    return;
+  }
+
+  const { error } = updateContactSchema.validate(req.body);
+
+  if (error) {
+    res.status(400).json({
+      status: "error",
+      code: 400,
+      message: error.message,
     });
     return;
   }
