@@ -1,4 +1,4 @@
-const contacts = require("../contacts.json");
+const contacts = require("../model/contacts.json");
 
 const listContacts = (req, res) => {
   res.json({

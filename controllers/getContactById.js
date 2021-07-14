@@ -1,4 +1,4 @@
-const contacts = require("../contacts.json");
+const contacts = require("../model/contacts.json");
 
 const getContactById = (req, res) => {
   const { contactId } = req.params;

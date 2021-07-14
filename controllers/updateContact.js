@@ -1,7 +1,5 @@
-const contacts = require("../contacts.json");
-const {
-  updateContactSchema,
-} = require("../../utils/validate/schemas/contacts");
+const contacts = require("../model/contacts.json");
+const { updateContactSchema } = require("../utils/validate/schemas/contacts");
 
 const updateContact = (req, res) => {
   const { contactId } = req.params;
