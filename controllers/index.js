@@ -8,10 +8,13 @@ const addContact = require("./addContact");
 
 const updateContact = require("./updateContact");
 
+const addToFavorite = require("./addToFavorite");
+
 module.exports = {
   listContacts,
   getContactById,
   removeContact,
   addContact,
   updateContact,
+  addToFavorite,
 };
