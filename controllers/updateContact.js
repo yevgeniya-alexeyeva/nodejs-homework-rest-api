@@ -32,6 +32,13 @@ const updateContact = async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error.message.includes("Cast to ObjectId failed")) {
+      return res.status(404).json({
+        status: "error",
+        code: 404,
+        message: "not found",
+      });
+    }
     next(error);
   }
 };
