@@ -1,9 +1,8 @@
-const Contact = require("../model/contactModel");
+const { Contact } = require("../../model");
 
-const addToFavorite = async (req, res, next) => {
+const updateContact = async (req, res, next) => {
   const { contactId } = req.params;
   const { body } = req;
-
   if (!body) {
     res.status(400).json({
       status: "error",
@@ -11,7 +10,6 @@ const addToFavorite = async (req, res, next) => {
       message: "missing field favorite",
     });
   }
-
   try {
     const result = await Contact.findByIdAndUpdate(contactId, body, {
       new: true,
@@ -28,7 +26,6 @@ const addToFavorite = async (req, res, next) => {
 
     res.json({
       status: "success",
-      message: "added to favorite",
       code: 200,
       data: {
         result,
@@ -46,4 +43,4 @@ const addToFavorite = async (req, res, next) => {
   }
 };
 
-module.exports = addToFavorite;
+module.exports = updateContact;
