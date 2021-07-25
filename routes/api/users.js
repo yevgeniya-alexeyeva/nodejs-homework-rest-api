@@ -11,4 +11,11 @@ router.patch("/logout", authenticate, express.json(), ctrls.logout);
 
 router.get("/current", authenticate, ctrls.getCurrentUser);
 
+router.patch(
+  "/:id/subscription",
+  authenticate,
+  express.json(),
+  ctrls.updateSubscription
+);
+
 module.exports = router;

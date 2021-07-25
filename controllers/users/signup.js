@@ -5,6 +5,7 @@ const addUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
+
     if (user) {
       res.status(409).json({
         status: "error",
@@ -13,7 +14,7 @@ const addUser = async (req, res, next) => {
       });
     }
 
-    const newUser = await User.create({ email, password });
+    const newUser = await User.create(req.body);
 
     if (!newUser) {
       res.status(400).json({
