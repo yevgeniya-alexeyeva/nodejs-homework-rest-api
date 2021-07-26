@@ -9,6 +9,10 @@ const contactSchema = new Schema(
     },
     email: {
       type: String,
+      validate(value) {
+        const re = /\S+@\S+\.\S+/g;
+        return re.test(String(value).toLowerCase());
+      },
     },
     phone: {
       type: String,
@@ -17,7 +21,7 @@ const contactSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    owner: {
+    user: {
       type: SchemaTypes.ObjectId,
       ref: "user",
     },

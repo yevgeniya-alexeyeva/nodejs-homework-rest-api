@@ -3,6 +3,7 @@ const { Contact } = require("../../model");
 const addToFavorite = async (req, res, next) => {
   const { contactId } = req.params;
   const { body } = req;
+  const { id } = req.user;
 
   if (!body) {
     res.status(400).json({
@@ -13,9 +14,13 @@ const addToFavorite = async (req, res, next) => {
   }
 
   try {
-    const result = await Contact.findByIdAndUpdate(contactId, body, {
-      new: true,
-    });
+    const result = await Contact.findOneAndUpdate(
+      { _id: contactId, user: id },
+      body,
+      {
+        new: true,
+      }
+    );
 
     if (!result) {
       res.status(400).json({
