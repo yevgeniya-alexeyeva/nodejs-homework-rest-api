@@ -1,7 +1,8 @@
-const Contact = require("../model/contactModel");
+const { Contact } = require("../../model");
 
-const addToFavorite = async (req, res, next) => {
+const updateContact = async (req, res, next) => {
   const { contactId } = req.params;
+  const { id } = req.user;
   const { body } = req;
 
   if (!body) {
@@ -13,9 +14,13 @@ const addToFavorite = async (req, res, next) => {
   }
 
   try {
-    const result = await Contact.findByIdAndUpdate(contactId, body, {
-      new: true,
-    });
+    const result = await Contact.findOneAndUpdate(
+      { _id: contactId, user: id },
+      body,
+      {
+        new: true,
+      }
+    );
 
     if (!result) {
       res.status(400).json({
@@ -28,7 +33,6 @@ const addToFavorite = async (req, res, next) => {
 
     res.json({
       status: "success",
-      message: "added to favorite",
       code: 200,
       data: {
         result,
@@ -46,4 +50,4 @@ const addToFavorite = async (req, res, next) => {
   }
 };
 
-module.exports = addToFavorite;
+module.exports = updateContact;
