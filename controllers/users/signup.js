@@ -24,12 +24,12 @@ const addUser = async (req, res, next) => {
       });
     }
     newUser.setPassword(password);
+    const avatar = newUser.setAvatar(email);
     const { _id, subscription } = await newUser.save();
 
     const token = addToken(_id);
 
-    const loginUser = await User.findOneAndUpdate({ _id }, { token });
-    console.log("addUser -> loginUser", loginUser);
+    await User.findOneAndUpdate({ _id }, { token });
 
     res.status(201).json({
       status: "success",
@@ -39,6 +39,7 @@ const addUser = async (req, res, next) => {
         email,
         subscription,
         token,
+        avatar,
       },
     });
   } catch (error) {
