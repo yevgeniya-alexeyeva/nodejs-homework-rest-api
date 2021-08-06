@@ -6,11 +6,6 @@ const salt = bcrypt.genSaltSync(10);
 
 const userSchema = new Schema(
   {
-    password: {
-      type: String,
-      minlength: 8,
-      required: [true, "Password is required"],
-    },
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -20,6 +15,11 @@ const userSchema = new Schema(
         return re.test(String(value).toLowerCase());
       },
     },
+    password: {
+      type: String,
+      minlength: 8,
+      required: [true, "Password is required"],
+    },
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],
@@ -28,6 +28,14 @@ const userSchema = new Schema(
     token: {
       type: String,
       default: null,
+    },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
     },
     avatarUrl: {
       type: String,
