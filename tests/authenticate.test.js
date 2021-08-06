@@ -1,4 +1,4 @@
-const authenticate = require("./authenticate");
+const { authenticate } = require("../middlewares");
 const passport = require("passport");
 
 describe("test authenticate mw", () => {
@@ -18,6 +18,7 @@ describe("test authenticate mw", () => {
     authenticate(req, res, next);
     expect(req.user).toBe(user);
     expect(next).toHaveBeenCalled();
+    expect(next).toHaveBeenCalledTimes(1);
   });
   test("token is not exist", async () => {
     passport.authenticate = jest.fn(
@@ -29,7 +30,9 @@ describe("test authenticate mw", () => {
     authenticate(req, res, next);
 
     expect(res.status).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveReturnedWith({
       status: "error",
       code: 401,
@@ -46,7 +49,9 @@ describe("test authenticate mw", () => {
     authenticate(req, res, next);
 
     expect(res.status).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveReturnedWith({
       status: "error",
       code: 401,
