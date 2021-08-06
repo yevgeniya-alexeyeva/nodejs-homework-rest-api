@@ -17,7 +17,6 @@ describe("test authenticate mw", () => {
     );
     authenticate(req, res, next);
     expect(req.user).toBe(user);
-    expect(next).toHaveBeenCalled();
     expect(next).toHaveBeenCalledTimes(1);
   });
   test("token is not exist", async () => {
@@ -29,9 +28,7 @@ describe("test authenticate mw", () => {
 
     authenticate(req, res, next);
 
-    expect(res.status).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalled();
     expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveReturnedWith({
       status: "error",
@@ -48,9 +45,7 @@ describe("test authenticate mw", () => {
 
     authenticate(req, res, next);
 
-    expect(res.status).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalled();
     expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveReturnedWith({
       status: "error",
