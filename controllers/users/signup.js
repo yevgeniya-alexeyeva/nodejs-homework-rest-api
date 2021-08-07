@@ -1,8 +1,10 @@
 const { User } = require("../../model");
-const addToken = require("../../helpers/addToken");
+const { v4 } = require("uuid");
+const sendEmail = require("../../helpers/sendEmail");
 
 const addUser = async (req, res, next) => {
   const { email, password } = req.body;
+
   try {
     const user = await User.findOne({ email });
 
@@ -14,7 +16,9 @@ const addUser = async (req, res, next) => {
       });
     }
 
-    const newUser = await User.create(req.body);
+    const verificationToken = v4();
+
+    const newUser = await User.create({ ...req.body, verificationToken });
 
     if (!newUser) {
       res.status(400).json({
@@ -23,13 +27,19 @@ const addUser = async (req, res, next) => {
         message: "Bad request",
       });
     }
+
+    const mail = {
+      to: email,
+      subject: "Please Verify Your Phonebook",
+      text: "Let's verify your email so you can start to use your phonebook",
+      html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}">Let's verify your email so you can start to use your phonebook</a>`,
+    };
+
+    sendEmail(mail);
+
     newUser.setPassword(password);
     const avatar = newUser.setAvatar(email);
     const { _id, subscription } = await newUser.save();
-
-    const token = addToken(_id);
-
-    await User.findOneAndUpdate({ _id }, { token });
 
     res.status(201).json({
       status: "success",
@@ -38,7 +48,6 @@ const addUser = async (req, res, next) => {
         _id,
         email,
         subscription,
-        token,
         avatar,
       },
     });

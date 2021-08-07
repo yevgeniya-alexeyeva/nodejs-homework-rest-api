@@ -6,7 +6,7 @@ const login = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-    const { subscription } = user;
+    const { subscription, verify } = user;
     if (!user || !user.comparePassword(password)) {
       res.status(400).json({
         status: "error",
@@ -15,7 +15,18 @@ const login = async (req, res, next) => {
       });
       return;
     }
+
+    if (!verify) {
+      res.status(400).json({
+        status: "error",
+        code: 400,
+        message: "Email not verified",
+      });
+      return;
+    }
+
     const token = addToken(user._id);
+
     await User.findByIdAndUpdate(user._id, { token });
     res.json({
       status: "success",
